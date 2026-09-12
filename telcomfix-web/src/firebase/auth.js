@@ -66,6 +66,25 @@ export async function signIn(email, password) {
 }
 
 // ------------------------------------
+// Sign Up — returns { user, profile }
+// ------------------------------------
+export async function signUp(email, password, displayName, role = "engineer") {
+  try {
+    const credential = await createUserWithEmailAndPassword(auth, email, password);
+    await updateProfile(credential.user, { displayName });
+    const profile = await createUserProfile(credential.user.uid, {
+      role,
+      displayName,
+      email,
+      zone: "Western Province",
+    });
+    return { user: credential.user, profile };
+  } catch (error) {
+    throw mapAuthError(error);
+  }
+}
+
+// ------------------------------------
 // Quick demo login by role (no typing)
 // Creates account if it doesn't exist yet
 // ------------------------------------
