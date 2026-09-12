@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { useApp } from '../../context/AppContext';
-import { addUserToFirestore, updateUserInFirestore } from '../../firebase/firestore';
 import { Users, UserCheck, HardHat, UserX, Search, Plus, CheckCircle2, UserPlus } from 'lucide-react';
 
 const ROLES = ['System Admin', 'NOC Engineer', 'Field Engineer', 'Customer Support'];

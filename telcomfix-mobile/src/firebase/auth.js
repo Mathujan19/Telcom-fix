@@ -50,6 +50,25 @@ export async function demoLogin(role) {
   }
 }
 
+export async function login(email, password) {
+  const cred = await signInWithEmailAndPassword(auth, email, password);
+  const profile = await getUserProfile(cred.user.uid);
+  return { user: cred.user, profile };
+}
+
+export async function signUp(email, password, role, displayName, extraData = {}) {
+  const cred = await createUserWithEmailAndPassword(auth, email, password);
+  await updateProfile(cred.user, { displayName });
+  const profileData = {
+    email,
+    role,
+    displayName,
+    ...extraData,
+  };
+  const profile = await createUserProfile(cred.user.uid, profileData);
+  return { user: cred.user, profile };
+}
+
 export async function getUserProfile(uid) {
   const snap = await getDoc(doc(db, 'users', uid));
   return snap.exists() ? { uid, ...snap.data() } : null;

@@ -3,7 +3,7 @@
 // ============================================================
 import React, { createContext, useContext, useReducer, useEffect, useState } from 'react';
 import { TOWERS, CUSTOMERS, TICKETS, JOBS, ALARM_EVENTS, VAS_ITEMS, CREDIT_HISTORY } from '../data/mockData';
-import { subscribeAuthState, demoLogin, logOut } from '../firebase/auth';
+import { subscribeAuthState, demoLogin, logOut, login, signUp } from '../firebase/auth';
 import {
   seedIfEmpty, subscribeTowers, subscribeTickets,
   subscribeMyJobs, submitTicket, closeJob as fbCloseJob, pushAlarm,
@@ -167,6 +167,18 @@ export function AppProvider({ children }) {
           : { id: 'ENG_001', name: 'Ravi Kumar', zone: 'Western Province - South', role };
         dispatch({ type: 'SET_ROLE', role, user: localUser });
       }
+    },
+
+    login: async (email, password) => {
+      const { user, profile } = await login(email, password);
+      dispatch({ type: 'SET_AUTH', user, profile });
+      setFbReady(true);
+    },
+
+    signUp: async (email, password, role, name) => {
+      const { user, profile } = await signUp(email, password, role, name);
+      dispatch({ type: 'SET_AUTH', user, profile });
+      setFbReady(true);
     },
 
     logout: async () => {

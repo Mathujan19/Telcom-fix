@@ -3,6 +3,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { useApp } from '../context/AppContext';
+import { Feather } from '@expo/vector-icons';
 
 // Screens
 import LoginScreen from '../screens/LoginScreen';
@@ -26,36 +27,36 @@ function CustomerTabs() {
     <Tab.Navigator
       screenOptions={{
         headerShown: false,
-        tabBarActiveTintColor: '#dc2626',
-        tabBarInactiveTintColor: '#9ca3af',
+        tabBarActiveTintColor: '#f43f5e',
+        tabBarInactiveTintColor: '#94a3b8',
         tabBarStyle: {
           backgroundColor: '#fff',
           borderTopColor: '#e2e8f0',
           paddingBottom: 4,
           height: 60,
         },
-        tabBarLabelStyle: { fontSize: 11, fontWeight: '600', paddingBottom: 4 },
+        tabBarLabelStyle: { fontSize: 11, fontFamily: 'Inter_600SemiBold', paddingBottom: 4 },
       }}
     >
       <Tab.Screen
         name="Home"
         component={CustomerHome}
-        options={{ tabBarLabel: 'Home', tabBarIcon: ({ color }) => <TabIcon emoji="🏠" color={color} /> }}
+        options={{ tabBarLabel: 'Home', tabBarIcon: ({ color }) => <TabIcon iconName="home" color={color} /> }}
       />
       <Tab.Screen
         name="TicketTracker"
         component={TicketTrackerScreen}
-        options={{ tabBarLabel: 'Tickets', tabBarIcon: ({ color }) => <TabIcon emoji="🎫" color={color} /> }}
+        options={{ tabBarLabel: 'Tickets', tabBarIcon: ({ color }) => <TabIcon iconName="file-text" color={color} /> }}
       />
       <Tab.Screen
         name="Diagnostic"
         component={DiagnosticScreen}
-        options={{ tabBarLabel: 'Diagnose', tabBarIcon: ({ color }) => <TabIcon emoji="🔬" color={color} /> }}
+        options={{ tabBarLabel: 'Diagnose', tabBarIcon: ({ color }) => <TabIcon iconName="activity" color={color} /> }}
       />
       <Tab.Screen
         name="Billing"
         component={BillingScreen}
-        options={{ tabBarLabel: 'Billing', tabBarIcon: ({ color }) => <TabIcon emoji="💳" color={color} /> }}
+        options={{ tabBarLabel: 'Billing', tabBarIcon: ({ color }) => <TabIcon iconName="credit-card" color={color} /> }}
       />
     </Tab.Navigator>
   );
@@ -66,42 +67,39 @@ function EngineerTabs() {
     <Tab.Navigator
       screenOptions={{
         headerShown: false,
-        tabBarActiveTintColor: '#dc2626',
-        tabBarInactiveTintColor: '#9ca3af',
+        tabBarActiveTintColor: '#f43f5e',
+        tabBarInactiveTintColor: '#64748b',
         tabBarStyle: {
-          backgroundColor: '#111827',
-          borderTopColor: '#374151',
+          backgroundColor: '#0f172a',
+          borderTopColor: '#1e293b',
           paddingBottom: 4,
           height: 60,
         },
-        tabBarLabelStyle: { fontSize: 11, fontWeight: '600', paddingBottom: 4, color: '#9ca3af' },
-        tabBarActiveTintColor: '#f87171',
-        tabBarInactiveTintColor: '#6b7280',
+        tabBarLabelStyle: { fontSize: 11, fontFamily: 'Inter_600SemiBold', paddingBottom: 4 },
       }}
     >
       <Tab.Screen
         name="JobQueue"
         component={JobQueueScreen}
-        options={{ tabBarLabel: 'Jobs', tabBarIcon: ({ color }) => <TabIcon emoji="🔧" color={color} /> }}
+        options={{ tabBarLabel: 'Jobs', tabBarIcon: ({ color }) => <TabIcon iconName="tool" color={color} /> }}
       />
       <Tab.Screen
         name="TowerMap"
         component={TowerMapScreen}
-        options={{ tabBarLabel: 'Map', tabBarIcon: ({ color }) => <TabIcon emoji="🗺️" color={color} /> }}
+        options={{ tabBarLabel: 'Map', tabBarIcon: ({ color }) => <TabIcon iconName="map" color={color} /> }}
       />
       <Tab.Screen
         name="AlarmFeed"
         component={AlarmFeedScreen}
-        options={{ tabBarLabel: 'Alarms', tabBarIcon: ({ color }) => <TabIcon emoji="🚨" color={color} /> }}
+        options={{ tabBarLabel: 'Alarms', tabBarIcon: ({ color }) => <TabIcon iconName="bell" color={color} /> }}
       />
     </Tab.Navigator>
   );
 }
 
-// Simple emoji tab icon component
-function TabIcon({ emoji, color }) {
-  const { Text } = require('react-native');
-  return <Text style={{ fontSize: 20 }}>{emoji}</Text>;
+// Simple vector icon component
+function TabIcon({ iconName, color }) {
+  return <Feather name={iconName} size={22} color={color} />;
 }
 
 export default function AppNavigator() {

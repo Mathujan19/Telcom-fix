@@ -5,6 +5,10 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { AppProvider, useApp } from './src/context/AppContext';
 import AppNavigator from './src/navigation/AppNavigator';
 
+import { useFonts, Inter_400Regular, Inter_500Medium, Inter_600SemiBold, Inter_700Bold } from '@expo-google-fonts/inter';
+import { Outfit_400Regular, Outfit_500Medium, Outfit_600SemiBold, Outfit_700Bold, Outfit_800ExtraBold } from '@expo-google-fonts/outfit';
+import { Ionicons } from '@expo/vector-icons';
+
 function AppInner() {
   const { state } = useApp();
 
@@ -12,9 +16,9 @@ function AppInner() {
   if (state.authLoading) {
     return (
       <View style={styles.splash}>
-        <Text style={styles.logo}>📡</Text>
+        <Ionicons name="radio-outline" size={64} color="#f43f5e" />
         <Text style={styles.title}>TelcomFix</Text>
-        <ActivityIndicator color="#dc2626" size="large" style={{ marginTop: 24 }} />
+        <ActivityIndicator color="#f43f5e" size="large" style={{ marginTop: 24 }} />
         <Text style={styles.sub}>Connecting to Firebase...</Text>
       </View>
     );
@@ -24,6 +28,19 @@ function AppInner() {
 }
 
 export default function App() {
+  const [fontsLoaded] = useFonts({
+    Inter_400Regular, Inter_500Medium, Inter_600SemiBold, Inter_700Bold,
+    Outfit_400Regular, Outfit_500Medium, Outfit_600SemiBold, Outfit_700Bold, Outfit_800ExtraBold
+  });
+
+  if (!fontsLoaded) {
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#f8fafc' }}>
+        <ActivityIndicator size="large" color="#f43f5e" />
+      </View>
+    );
+  }
+
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <AppProvider>
@@ -39,9 +56,8 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#fff',
+    backgroundColor: '#f8fafc',
   },
-  logo: { fontSize: 64 },
-  title: { fontSize: 28, fontWeight: '800', color: '#111827', marginTop: 12 },
-  sub: { fontSize: 13, color: '#9ca3af', marginTop: 12 },
+  title: { fontSize: 28, fontFamily: 'Outfit_800ExtraBold', color: '#0f172a', marginTop: 12, letterSpacing: -0.5 },
+  sub: { fontSize: 13, fontFamily: 'Inter_500Medium', color: '#94a3b8', marginTop: 12 },
 });

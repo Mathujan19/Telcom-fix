@@ -1,14 +1,18 @@
 import React from 'react';
 import {
   View, Text, StyleSheet, SafeAreaView, FlatList,
-  TouchableOpacity,
+  TouchableOpacity, Dimensions
 } from 'react-native';
+import MapView, { Marker } from 'react-native-maps';
+import { Feather, Ionicons } from '@expo/vector-icons';
 import { useApp } from '../../context/AppContext';
 
+const { height } = Dimensions.get('window');
+
 const SEVERITY_CONFIG = {
-  'Critical Outage': { color: '#dc2626', bg: '#fef2f2', icon: '🔴' },
-  'Degraded Hardware': { color: '#d97706', bg: '#fffbeb', icon: '🟡' },
-  'Predictive Alert': { color: '#7c3aed', bg: '#f5f3ff', icon: '🟣' },
+  'Critical Outage': { color: '#dc2626', bg: '#fef2f2', icon: 'alert-triangle' },
+  'Degraded Hardware': { color: '#d97706', bg: '#fffbeb', icon: 'activity' },
+  'Predictive Alert': { color: '#7c3aed', bg: '#f5f3ff', icon: 'eye' },
 };
 
 const STATUS_CONFIG = {
@@ -22,6 +26,9 @@ export default function JobQueueScreen({ navigation }) {
   const { jobs, currentUser } = state;
   const myJobs = jobs.filter(j => j.assignedTo === currentUser?.id);
 
+  const pending = myJobs.filter(j => j.status !== 'COMPLETED').length;
+  const done = myJobs.filter(j => j.status === 'COMPLETED').length;
+
   const renderJob = ({ item: job }) => {
     const sev = SEVERITY_CONFIG[job.severity] || SEVERITY_CONFIG['Degraded Hardware'];
     const st = STATUS_CONFIG[job.status] || STATUS_CONFIG['PENDING'];
@@ -34,9 +41,8 @@ export default function JobQueueScreen({ navigation }) {
       >
         <View style={styles.jobHeader}>
           <View style={[styles.sevBadge, { backgroundColor: sev.bg }]}>
-            <Text style={[styles.sevText, { color: sev.color }]}>
-              {sev.icon} {job.severity}
-            </Text>
+            <Feather name={sev.icon} size={14} color={sev.color} />
+            <Text style={[styles.sevText, { color: sev.color }]}>{job.severity}</Text>
           </View>
           <View style={[styles.statusBadge, { backgroundColor: st.bg }]}>
             <Text style={[styles.statusText, { color: st.color }]}>{job.status}</Text>
@@ -48,26 +54,39 @@ export default function JobQueueScreen({ navigation }) {
 
         <View style={styles.alarmRow}>
           <View style={styles.alarmTag}>
-            <Text style={styles.alarmTagText}>⚠️ {job.alarmCode}</Text>
+            <Feather name="alert-circle" size={12} color="#dc2626" />
+            <Text style={styles.alarmTagText}>{job.alarmCode}</Text>
           </View>
           {job.alarmCode2 && (
             <View style={styles.alarmTag}>
-              <Text style={styles.alarmTagText}>⚠️ {job.alarmCode2}</Text>
+              <Feather name="alert-circle" size={12} color="#dc2626" />
+              <Text style={styles.alarmTagText}>{job.alarmCode2}</Text>
             </View>
           )}
         </View>
 
         <View style={styles.jobFooter}>
-          <Text style={styles.impact}>👥 {job.impactedSubscribers} affected</Text>
-          <Text style={styles.bands}>📡 {job.bands.join(' + ')}</Text>
-          <Text style={styles.chevron}>›</Text>
+          <View style={styles.footerItem}>
+            <Feather name="users" size={14} color="#64748b" />
+            <Text style={styles.impact}>{job.impactedSubscribers} affected</Text>
+          </View>
+          <View style={styles.footerItem}>
+            <Ionicons name="radio" size={14} color="#64748b" />
+            <Text style={styles.bands}>{job.bands.join(' + ')}</Text>
+          </View>
+          <Feather name="chevron-right" size={20} color="#94a3b8" />
         </View>
       </TouchableOpacity>
     );
   };
 
-  const pending = myJobs.filter(j => j.status !== 'COMPLETED').length;
-  const done = myJobs.filter(j => j.status === 'COMPLETED').length;
+  // Center of Colombo roughly
+  const region = {
+    latitude: 6.85,
+    longitude: 79.88,
+    latitudeDelta: 0.2,
+    longitudeDelta: 0.2,
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -77,13 +96,35 @@ export default function JobQueueScreen({ navigation }) {
           <Text style={styles.subtitle}>{pending} open · {done} completed today</Text>
         </View>
         <View style={styles.engineerBadge}>
-          <Text style={styles.engineerText}>🔧 ENG</Text>
+          <Feather name="tool" size={14} color="#fff" />
+          <Text style={styles.engineerText}>ENG</Text>
         </View>
+      </View>
+
+      <View style={styles.mapContainer}>
+        <MapView
+          style={styles.map}
+          initialRegion={region}
+          showsUserLocation={true}
+        >
+          {myJobs.map(job => (
+            <Marker
+              key={job.id}
+              coordinate={{ latitude: job.lat, longitude: job.lng }}
+              title={job.towerName}
+              description={`Task: ${job.ticketId} - ${job.severity}`}
+            >
+              <View style={[styles.marker, { backgroundColor: job.status === 'COMPLETED' ? '#16a34a' : '#f43f5e' }]}>
+                <Feather name="tool" size={14} color="#fff" />
+              </View>
+            </Marker>
+          ))}
+        </MapView>
       </View>
 
       {myJobs.length === 0 ? (
         <View style={styles.emptyState}>
-          <Text style={styles.emptyIcon}>✅</Text>
+          <Feather name="check-circle" size={64} color="#16a34a" style={styles.emptyIcon} />
           <Text style={styles.emptyTitle}>All caught up!</Text>
           <Text style={styles.emptySub}>No open jobs assigned to you.</Text>
         </View>
@@ -110,26 +151,35 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     borderBottomWidth: 1,
     borderBottomColor: '#e2e8f0',
+    zIndex: 10,
   },
-  title: { fontSize: 22, fontWeight: '700', color: '#111827' },
-  subtitle: { fontSize: 13, color: '#6b7280', marginTop: 2 },
+  title: { fontSize: 22, fontFamily: 'Outfit_700Bold', color: '#0f172a' },
+  subtitle: { fontSize: 13, fontFamily: 'Inter_500Medium', color: '#64748b', marginTop: 2 },
   engineerBadge: {
-    backgroundColor: '#dc2626',
+    backgroundColor: '#0f172a',
+    flexDirection: 'row',
+    alignItems: 'center',
     paddingHorizontal: 12,
     paddingVertical: 6,
     borderRadius: 12,
+    gap: 6,
   },
-  engineerText: { color: '#fff', fontSize: 12, fontWeight: '700' },
-  list: { padding: 16, gap: 12 },
+  engineerText: { color: '#fff', fontSize: 12, fontFamily: 'Inter_700Bold' },
+  
+  mapContainer: { height: height * 0.3, width: '100%', borderBottomWidth: 1, borderBottomColor: '#e2e8f0' },
+  map: { ...StyleSheet.absoluteFillObject },
+  marker: { padding: 6, borderRadius: 20, borderWidth: 2, borderColor: '#fff', shadowColor: '#000', shadowOpacity: 0.3, shadowRadius: 4, elevation: 4 },
+
+  list: { padding: 16, gap: 12, paddingBottom: 40 },
   jobCard: {
     backgroundColor: '#fff',
     borderRadius: 18,
     padding: 18,
     borderLeftWidth: 4,
     shadowColor: '#000',
-    shadowOpacity: 0.06,
+    shadowOpacity: 0.04,
     shadowRadius: 10,
-    elevation: 3,
+    elevation: 2,
   },
   jobHeader: {
     flexDirection: 'row',
@@ -137,14 +187,19 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 10,
   },
-  sevBadge: { paddingHorizontal: 10, paddingVertical: 4, borderRadius: 8 },
-  sevText: { fontSize: 12, fontWeight: '700' },
+  sevBadge: { flexDirection: 'row', alignItems: 'center', gap: 6, paddingHorizontal: 10, paddingVertical: 4, borderRadius: 8 },
+  sevText: { fontSize: 12, fontFamily: 'Inter_700Bold' },
   statusBadge: { paddingHorizontal: 10, paddingVertical: 4, borderRadius: 8 },
-  statusText: { fontSize: 11, fontWeight: '700' },
-  towerName: { fontSize: 17, fontWeight: '700', color: '#111827', marginBottom: 2 },
-  siteId: { fontSize: 12, color: '#6b7280', marginBottom: 10 },
+  statusText: { fontSize: 11, fontFamily: 'Inter_700Bold' },
+  
+  towerName: { fontSize: 17, fontFamily: 'Outfit_700Bold', color: '#0f172a', marginBottom: 2 },
+  siteId: { fontSize: 12, fontFamily: 'Inter_500Medium', color: '#64748b', marginBottom: 10 },
+  
   alarmRow: { flexDirection: 'row', gap: 8, marginBottom: 12, flexWrap: 'wrap' },
   alarmTag: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
     backgroundColor: '#fef2f2',
     paddingHorizontal: 10,
     paddingVertical: 5,
@@ -152,20 +207,22 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#fecaca',
   },
-  alarmTagText: { fontSize: 12, color: '#dc2626', fontWeight: '600' },
+  alarmTagText: { fontSize: 12, color: '#dc2626', fontFamily: 'Inter_600SemiBold' },
+  
   jobFooter: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 12,
-    paddingTop: 10,
+    gap: 16,
+    paddingTop: 12,
     borderTopWidth: 1,
     borderTopColor: '#f1f5f9',
   },
-  impact: { fontSize: 12, color: '#374151', fontWeight: '600' },
-  bands: { fontSize: 12, color: '#374151', flex: 1 },
-  chevron: { fontSize: 20, color: '#9ca3af' },
+  footerItem: { flexDirection: 'row', alignItems: 'center', gap: 6, flex: 1 },
+  impact: { fontSize: 12, color: '#475569', fontFamily: 'Inter_600SemiBold' },
+  bands: { fontSize: 12, color: '#475569', fontFamily: 'Inter_600SemiBold' },
+  
   emptyState: { flex: 1, alignItems: 'center', justifyContent: 'center', padding: 32 },
-  emptyIcon: { fontSize: 64, marginBottom: 16 },
-  emptyTitle: { fontSize: 20, fontWeight: '700', color: '#111827', marginBottom: 4 },
-  emptySub: { fontSize: 14, color: '#6b7280' },
+  emptyIcon: { marginBottom: 16 },
+  emptyTitle: { fontSize: 20, fontFamily: 'Outfit_700Bold', color: '#0f172a', marginBottom: 4 },
+  emptySub: { fontSize: 14, fontFamily: 'Inter_500Medium', color: '#64748b' },
 });
