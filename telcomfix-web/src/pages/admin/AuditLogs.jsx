@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useApp } from '../../context/AppContext';
+import { ClipboardList, Bot, Truck, Coins, Zap, Wrench, Search } from 'lucide-react';
 
 export default function AuditLogs() {
   const { state } = useApp();
@@ -16,10 +17,10 @@ export default function AuditLogs() {
   });
 
   const getActionBadge = (action) => {
-    if (action.includes('REFUND') || action.includes('CREDIT')) return <span className="badge badge-green">💰 {action}</span>;
-    if (action.includes('OUTAGE') || action.includes('BROADCAST')) return <span className="badge badge-red">📢 {action}</span>;
-    if (action.includes('DISPATCH')) return <span className="badge badge-blue">🚁 {action}</span>;
-    if (action.includes('APN')) return <span className="badge badge-purple">📱 {action}</span>;
+    if (action.includes('REFUND') || action.includes('CREDIT')) return <span className="badge badge-green"><Coins size={14} style={{display: 'inline', verticalAlign: 'text-bottom', marginRight: 4}} /> {action}</span>;
+    if (action.includes('OUTAGE') || action.includes('BROADCAST')) return <span className="badge badge-red"><Zap size={14} style={{display: 'inline', verticalAlign: 'text-bottom', marginRight: 4}} /> {action}</span>;
+    if (action.includes('DISPATCH')) return <span className="badge badge-blue"><Truck size={14} style={{display: 'inline', verticalAlign: 'text-bottom', marginRight: 4}} /> {action}</span>;
+    if (action.includes('APN')) return <span className="badge badge-purple"><Wrench size={14} style={{display: 'inline', verticalAlign: 'text-bottom', marginRight: 4}} /> {action}</span>;
     return <span className="badge badge-gray">{action}</span>;
   };
 
@@ -30,10 +31,10 @@ export default function AuditLogs() {
       {/* Stats */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 16, marginBottom: 20 }}>
         {[
-          { label: 'Total Actions', value: auditLogs.length, icon: '📋', color: 'blue' },
-          { label: 'Auto-Resolutions', value: auditLogs.filter(l => !l.action.includes('DISPATCH')).length, icon: '🤖', color: 'green' },
-          { label: 'Field Dispatches', value: auditLogs.filter(l => l.action.includes('DISPATCH')).length, icon: '🚁', color: 'yellow' },
-          { label: 'Credits Issued', value: auditLogs.filter(l => l.action.includes('CREDIT') || l.action.includes('REFUND')).length, icon: '💰', color: 'red' },
+          { label: 'Total Actions', value: auditLogs.length, icon: <ClipboardList size={24} />, color: 'blue' },
+          { label: 'Auto-Resolutions', value: auditLogs.filter(l => !l.action.includes('DISPATCH')).length, icon: <Bot size={24} />, color: 'green' },
+          { label: 'Field Dispatches', value: auditLogs.filter(l => l.action.includes('DISPATCH')).length, icon: <Truck size={24} />, color: 'yellow' },
+          { label: 'Credits Issued', value: auditLogs.filter(l => l.action.includes('CREDIT') || l.action.includes('REFUND')).length, icon: <Coins size={24} />, color: 'red' },
         ].map(stat => (
           <div key={stat.label} className={`stat-card ${stat.color}`}>
             <div className="stat-icon">{stat.icon}</div>
@@ -46,12 +47,12 @@ export default function AuditLogs() {
       <div className="card">
         <div className="card-header">
           <div>
-            <div className="card-title">📋 End-to-End Audit Log Repository</div>
+            <div className="card-title"><ClipboardList size={18} style={{display: 'inline', verticalAlign: 'text-bottom', marginRight: 8}} /> End-to-End Audit Log Repository</div>
             <div className="card-subtitle">Every automated action tracked · {filtered.length} results</div>
           </div>
           <div style={{ display: 'flex', gap: 8 }}>
             <div style={{ position: 'relative' }}>
-              <span style={{ position: 'absolute', left: 10, top: '50%', transform: 'translateY(-50%)', fontSize: 14, color: '#9ca3af' }}>🔍</span>
+              <span style={{ position: 'absolute', left: 10, top: '50%', transform: 'translateY(-50%)', color: '#9ca3af', display: 'flex' }}><Search size={16} /></span>
               <input
                 type="text"
                 className="form-input"

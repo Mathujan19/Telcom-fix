@@ -1,12 +1,13 @@
 import React from 'react';
 import { useApp } from '../../context/AppContext';
+import { Settings2, Zap, BrainCircuit, Wrench, ShieldAlert, CheckCircle2, XCircle, AlertTriangle, Truck } from 'lucide-react';
 
 const SLIDERS = [
-  { key: 'autoRefundConfidence', label: 'Auto-Refund Confidence Threshold', desc: 'Min AI confidence to automatically issue billing refunds', icon: '💰' },
-  { key: 'apnResetConfidence', label: 'APN Reset Confidence Threshold', desc: 'Min confidence to push OTA carrier settings reset', icon: '📱' },
-  { key: 'outageBoradcastConfidence', label: 'Outage Broadcast Confidence', desc: 'Min confidence to broadcast outage alerts to customers', icon: '📢' },
-  { key: 'fieldDispatchConfidence', label: 'Field Dispatch Confidence', desc: 'Min confidence to automatically assign field engineers', icon: '🚁' },
-  { key: 'predictiveAlertRiskThreshold', label: 'Predictive Alert Risk Threshold', desc: 'Min failure risk score to trigger predictive maintenance alert', icon: '🔮' },
+  { key: 'autoRefundConfidence', label: 'Auto-Refund Confidence Threshold', desc: 'Min AI confidence to automatically issue billing refunds', icon: <Settings2 size={16} style={{display: 'inline', verticalAlign: 'text-bottom', marginRight: 4}} /> },
+  { key: 'apnResetConfidence', label: 'APN Reset Confidence Threshold', desc: 'Min confidence to push OTA carrier settings reset', icon: <Wrench size={16} style={{display: 'inline', verticalAlign: 'text-bottom', marginRight: 4}} /> },
+  { key: 'outageBoradcastConfidence', label: 'Outage Broadcast Confidence', desc: 'Min confidence to broadcast outage alerts to customers', icon: <Zap size={16} style={{display: 'inline', verticalAlign: 'text-bottom', marginRight: 4}} /> },
+  { key: 'fieldDispatchConfidence', label: 'Field Dispatch Confidence', desc: 'Min confidence to automatically assign field engineers', icon: <Truck size={16} style={{display: 'inline', verticalAlign: 'text-bottom', marginRight: 4}} /> },
+  { key: 'predictiveAlertRiskThreshold', label: 'Predictive Alert Risk Threshold', desc: 'Min failure risk score to trigger predictive maintenance alert', icon: <ShieldAlert size={16} style={{display: 'inline', verticalAlign: 'text-bottom', marginRight: 4}} /> },
 ];
 
 const TOGGLES = [
@@ -36,7 +37,7 @@ export default function AIControlPanel() {
         <div className="card">
           <div className="card-header">
             <div>
-              <div className="card-title">🎛️ AI Confidence Thresholds</div>
+              <div className="card-title"><BrainCircuit size={18} style={{display: 'inline', verticalAlign: 'text-bottom', marginRight: 8}} /> AI Confidence Thresholds</div>
               <div className="card-subtitle">Drag to adjust minimum confidence for automated actions</div>
             </div>
           </div>
@@ -73,7 +74,7 @@ export default function AIControlPanel() {
           <div className="card" style={{ marginBottom: 16 }}>
             <div className="card-header">
               <div>
-                <div className="card-title">🔧 Automation Rules</div>
+                <div className="card-title"><Settings2 size={18} style={{display: 'inline', verticalAlign: 'text-bottom', marginRight: 8}} /> Automation Rules</div>
                 <div className="card-subtitle">Enable or disable automated system actions</div>
               </div>
             </div>
@@ -100,15 +101,15 @@ export default function AIControlPanel() {
           {/* Current Config Summary */}
           <div className="card">
             <div className="card-header">
-              <div className="card-title">📊 Active Configuration</div>
+              <div className="card-title"><Zap size={18} style={{display: 'inline', verticalAlign: 'text-bottom', marginRight: 8}} /> Active Configuration</div>
             </div>
             <div className="card-body">
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8 }}>
                 {[
-                  { label: 'Auto-Refund', value: aiConfig.enableAutoRefund ? '✅ On' : '❌ Off', active: aiConfig.enableAutoRefund },
-                  { label: 'Broadcast', value: aiConfig.enableOutageBroadcast ? '✅ On' : '❌ Off', active: aiConfig.enableOutageBroadcast },
-                  { label: 'APN Reset', value: aiConfig.enableApnReset ? '✅ On' : '❌ Off', active: aiConfig.enableApnReset },
-                  { label: 'Predictive', value: aiConfig.enablePredictiveAlerts ? '✅ On' : '❌ Off', active: aiConfig.enablePredictiveAlerts },
+                  { label: 'Auto-Refund', value: aiConfig.enableAutoRefund ? <><CheckCircle2 size={14} style={{display: 'inline', verticalAlign: 'text-bottom', marginRight: 4}} /> On</> : <><XCircle size={14} style={{display: 'inline', verticalAlign: 'text-bottom', marginRight: 4}} /> Off</>, active: aiConfig.enableAutoRefund },
+                  { label: 'Broadcast', value: aiConfig.enableOutageBroadcast ? <><CheckCircle2 size={14} style={{display: 'inline', verticalAlign: 'text-bottom', marginRight: 4}} /> On</> : <><XCircle size={14} style={{display: 'inline', verticalAlign: 'text-bottom', marginRight: 4}} /> Off</>, active: aiConfig.enableOutageBroadcast },
+                  { label: 'APN Reset', value: aiConfig.enableApnReset ? <><CheckCircle2 size={14} style={{display: 'inline', verticalAlign: 'text-bottom', marginRight: 4}} /> On</> : <><XCircle size={14} style={{display: 'inline', verticalAlign: 'text-bottom', marginRight: 4}} /> Off</>, active: aiConfig.enableApnReset },
+                  { label: 'Predictive', value: aiConfig.enablePredictiveAlerts ? <><CheckCircle2 size={14} style={{display: 'inline', verticalAlign: 'text-bottom', marginRight: 4}} /> On</> : <><XCircle size={14} style={{display: 'inline', verticalAlign: 'text-bottom', marginRight: 4}} /> Off</>, active: aiConfig.enablePredictiveAlerts },
                 ].map(item => (
                   <div key={item.label} style={{ background: item.active ? 'var(--green-light)' : 'var(--gray-100)', borderRadius: 10, padding: 12, border: `1px solid ${item.active ? '#bbf7d0' : 'var(--gray-200)'}` }}>
                     <div style={{ fontSize: 11, color: 'var(--gray-500)' }}>{item.label}</div>
@@ -118,7 +119,7 @@ export default function AIControlPanel() {
               </div>
               <div style={{ marginTop: 16, padding: 12, background: '#fff5f5', borderRadius: 10, border: '1px solid #fca5a5' }}>
                 <div style={{ fontSize: 12, color: '#6b7280', lineHeight: 1.6 }}>
-                  <strong style={{ color: '#dc2626' }}>⚠️ Warning:</strong> Lowering thresholds increases automated actions. Monitor audit logs after changes to ensure accuracy.
+                  <strong style={{ color: '#dc2626' }}><AlertTriangle size={14} style={{display: 'inline', verticalAlign: 'text-bottom', marginRight: 4}} /> Warning:</strong> Lowering thresholds increases automated actions. Monitor audit logs after changes to ensure accuracy.
                 </div>
               </div>
             </div>

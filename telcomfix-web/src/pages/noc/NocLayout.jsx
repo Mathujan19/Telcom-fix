@@ -1,15 +1,16 @@
 import React, { useState } from 'react';
 import { useApp } from '../../context/AppContext';
+import { Map, BellRing, Truck, Zap, RadioTower, AlertTriangle, AlertCircle, CheckCircle2 } from 'lucide-react';
 import NocMap from './NocMap';
 import AlarmTable from './AlarmTable';
 import DispatchPanel from './DispatchPanel';
 import PredictiveRisk from './PredictiveRisk';
 
 const NAV_ITEMS = [
-  { id: 'map', icon: '🗺️', label: 'Live Network Map' },
-  { id: 'alarms', icon: '🚨', label: 'Alarm Monitor' },
-  { id: 'dispatch', icon: '🚁', label: 'Dispatch Control' },
-  { id: 'predictive', icon: '🔮', label: 'Predictive Risk' },
+  { id: 'map', icon: <Map size={18} />, label: 'Live Network Map' },
+  { id: 'alarms', icon: <BellRing size={18} />, label: 'Alarm Monitor' },
+  { id: 'dispatch', icon: <Truck size={18} />, label: 'Dispatch Control' },
+  { id: 'predictive', icon: <Zap size={18} />, label: 'Predictive Risk' },
 ];
 
 export default function NocLayout() {
@@ -34,7 +35,7 @@ export default function NocLayout() {
       {/* Sidebar */}
       <aside className="sidebar">
         <div className="sidebar-logo">
-          <div className="logo-icon">📡</div>
+          <div className="logo-icon"><RadioTower size={24} /></div>
           <div>
             <div className="logo-name">TelcomFix</div>
             <div className="logo-role">NOC Portal</div>
@@ -63,19 +64,19 @@ export default function NocLayout() {
           <div className="nav-section-label" style={{ marginTop: 16 }}>Quick Stats</div>
           <div style={{ padding: '8px 12px' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 8, fontSize: 12 }}>
-              <span style={{ color: 'var(--gray-500)' }}>🔴 Outage</span>
+              <span style={{ color: 'var(--gray-500)' }}><AlertTriangle size={14} style={{display: 'inline', verticalAlign: 'text-bottom', marginRight: 4, color: 'var(--red-primary)'}} /> Outage</span>
               <span style={{ fontWeight: 700, color: 'var(--red-primary)' }}>
                 {state.towers.filter(t => t.status === 'OUTAGE').length}
               </span>
             </div>
             <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 8, fontSize: 12 }}>
-              <span style={{ color: 'var(--gray-500)' }}>🟡 Degraded</span>
+              <span style={{ color: 'var(--gray-500)' }}><AlertCircle size={14} style={{display: 'inline', verticalAlign: 'text-bottom', marginRight: 4, color: 'var(--yellow)'}} /> Degraded</span>
               <span style={{ fontWeight: 700, color: 'var(--yellow)' }}>
                 {state.towers.filter(t => t.status === 'DEGRADED').length}
               </span>
             </div>
             <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 12 }}>
-              <span style={{ color: 'var(--gray-500)' }}>🟢 Normal</span>
+              <span style={{ color: 'var(--gray-500)' }}><CheckCircle2 size={14} style={{display: 'inline', verticalAlign: 'text-bottom', marginRight: 4, color: 'var(--green)'}} /> Normal</span>
               <span style={{ fontWeight: 700, color: 'var(--green)' }}>
                 {state.towers.filter(t => t.status === 'OPERATIONAL').length}
               </span>

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useApp } from '../../context/AppContext';
+import { ShieldCheck, Banknote, Crosshair, BarChart2, Shield, Coins, RadioTower, CheckCircle2, Loader2, TrendingUp, Save } from 'lucide-react';
 
 export default function CreditOversight() {
   const { state, dispatch, actions } = useApp();
@@ -14,7 +15,7 @@ export default function CreditOversight() {
 
   const handleSaveCap = () => {
     dispatch({ type: 'UPDATE_AI_CONFIG', updates: { maxAutoRefundPerCycle: parseInt(maxCredit) } });
-    alert('✅ Auto-refund cap updated to LKR ' + maxCredit + ' per user per cycle.');
+    alert('Auto-refund cap updated to LKR ' + maxCredit + ' per user per cycle.');
   };
 
   const handleBulkCredit = () => {
@@ -43,10 +44,10 @@ export default function CreditOversight() {
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20, marginBottom: 20 }}>
         {/* Stats */}
         {[
-          { label: 'Max Auto-Credit/User/Cycle', value: `LKR ${aiConfig.maxAutoRefundPerCycle}`, sub: 'Current policy cap', color: 'red', icon: '🛡️' },
-          { label: 'Total Credits Issued (Sep)', value: 'LKR 28,450', sub: '190 automatic refunds', color: 'green', icon: '💸' },
-          { label: 'Auto-Refund Accuracy', value: '96.2%', sub: 'Customer dispute rate: 3.8%', color: 'blue', icon: '🎯' },
-          { label: 'Avg Credit per Customer', value: 'LKR 150', sub: 'This billing cycle', color: 'yellow', icon: '📊' },
+          { label: 'Max Auto-Credit/User/Cycle', value: `LKR ${aiConfig.maxAutoRefundPerCycle}`, sub: 'Current policy cap', color: 'red', icon: <ShieldCheck size={24} /> },
+          { label: 'Total Credits Issued (Sep)', value: 'LKR 28,450', sub: '190 automatic refunds', color: 'green', icon: <Banknote size={24} /> },
+          { label: 'Auto-Refund Accuracy', value: '96.2%', sub: 'Customer dispute rate: 3.8%', color: 'blue', icon: <Crosshair size={24} /> },
+          { label: 'Avg Credit per Customer', value: 'LKR 150', sub: 'This billing cycle', color: 'yellow', icon: <BarChart2 size={24} /> },
         ].map(stat => (
           <div key={stat.label} className={`stat-card ${stat.color}`}>
             <div className="stat-icon">{stat.icon}</div>
@@ -61,7 +62,7 @@ export default function CreditOversight() {
         {/* Policy Configuration */}
         <div className="card">
           <div className="card-header">
-            <div className="card-title">🛡️ Auto-Refund Policy Rules</div>
+            <div className="card-title"><Shield size={18} style={{display: 'inline', verticalAlign: 'text-bottom', marginRight: 8}} /> Auto-Refund Policy Rules</div>
           </div>
           <div className="card-body">
             <div className="form-group">
@@ -100,7 +101,7 @@ export default function CreditOversight() {
             </div>
 
             <button className="btn btn-primary" onClick={handleSaveCap}>
-              💾 Save Policy
+              <Save size={16} style={{display: 'inline', verticalAlign: 'text-bottom', marginRight: 6}} /> Save Policy
             </button>
           </div>
         </div>
@@ -109,13 +110,13 @@ export default function CreditOversight() {
         <div>
           <div className="card" style={{ marginBottom: 16 }}>
             <div className="card-header">
-              <div className="card-title">💸 Bulk Compensation Tool</div>
+              <div className="card-title"><Coins size={18} style={{display: 'inline', verticalAlign: 'text-bottom', marginRight: 8}} /> Bulk Compensation Tool</div>
               <div className="card-subtitle">Issue credits to all customers on an affected tower</div>
             </div>
             <div className="card-body">
               {issued && (
                 <div style={{ background: 'var(--green-light)', border: '1px solid #bbf7d0', borderRadius: 10, padding: 12, marginBottom: 16 }}>
-                  <div style={{ fontWeight: 700, color: 'var(--green)', fontSize: 13 }}>✅ Credits issued successfully!</div>
+                  <div style={{ fontWeight: 700, color: 'var(--green)', fontSize: 13 }}><CheckCircle2 size={16} style={{display: 'inline', verticalAlign: 'text-bottom', marginRight: 6}} /> Credits issued successfully!</div>
                   <div style={{ fontSize: 12, color: '#374151', marginTop: 2 }}>Check audit logs for confirmation.</div>
                 </div>
               )}
@@ -125,10 +126,10 @@ export default function CreditOversight() {
                 <select className="form-select" value={bulkTower} onChange={e => setBulkTower(e.target.value)}>
                   <option value="">Select tower...</option>
                   {outageOrDegradedTowers.map(t => (
-                    <option key={t.id} value={t.id}>📡 {t.name} · {t.impactedSubscribers} subscribers ({t.status})</option>
+                    <option key={t.id} value={t.id}>Tower: {t.name} · {t.impactedSubscribers} subscribers ({t.status})</option>
                   ))}
                   {towers.filter(t => t.status === 'OPERATIONAL').slice(0, 5).map(t => (
-                    <option key={t.id} value={t.id}>📡 {t.name} · {t.id}</option>
+                    <option key={t.id} value={t.id}>Tower: {t.name} · {t.id}</option>
                   ))}
                 </select>
               </div>
@@ -154,14 +155,14 @@ export default function CreditOversight() {
                 disabled={issuing || !bulkAmount || !bulkTower}
                 style={{ width: '100%', justifyContent: 'center' }}
               >
-                {issuing ? '⏳ Issuing Credits...' : '💸 Issue Bulk Credits'}
+                {issuing ? <><Loader2 size={16} className="animate-spin" style={{display: 'inline', verticalAlign: 'text-bottom', marginRight: 6}} /> Issuing Credits...</> : <><Coins size={16} style={{display: 'inline', verticalAlign: 'text-bottom', marginRight: 6}} /> Issue Bulk Credits</>}
               </button>
             </div>
           </div>
 
           <div className="card">
             <div className="card-header">
-              <div className="card-title">📈 Credit Spend This Month</div>
+              <div className="card-title"><TrendingUp size={18} style={{display: 'inline', verticalAlign: 'text-bottom', marginRight: 8}} /> Credit Spend This Month</div>
             </div>
             <div className="card-body">
               {[

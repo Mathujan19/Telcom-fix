@@ -4,6 +4,7 @@ import {
   LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip,
   ResponsiveContainer, Legend, PieChart, Pie, Cell, AreaChart, Area,
 } from 'recharts';
+import { Clock, PhoneCall, Bot, Star, Calendar } from 'lucide-react';
 
 const COLORS = ['#16a34a', '#dc2626', '#2563eb', '#f59e0b'];
 
@@ -41,10 +42,10 @@ export default function Analytics() {
       {/* KPI Stats */}
       <div className="stats-grid" style={{ padding: 0, marginBottom: 20 }}>
         {[
-          { label: 'Avg MTTR (Sep)', value: '2.8h', sub: '↓ 1.7h from Aug', color: 'green', icon: '⏱️' },
-          { label: 'Call Deflection Rate', value: '84%', sub: '↑ 4% from Aug', color: 'blue', icon: '📞' },
-          { label: 'Auto-Resolution Rate', value: '68%', sub: '190 of 280 tickets', color: 'red', icon: '🤖' },
-          { label: 'Customer Satisfaction', value: '4.3/5', sub: 'Based on 142 ratings', color: 'yellow', icon: '⭐' },
+          { label: 'Avg MTTR (Sep)', value: '2.8h', sub: '↓ 1.7h from Aug', color: 'green', icon: <Clock size={24} /> },
+          { label: 'Call Deflection Rate', value: '84%', sub: '↑ 4% from Aug', color: 'blue', icon: <PhoneCall size={24} /> },
+          { label: 'Auto-Resolution Rate', value: '68%', sub: '190 of 280 tickets', color: 'red', icon: <Bot size={24} /> },
+          { label: 'Customer Satisfaction', value: '4.3/5', sub: 'Based on 142 ratings', color: 'yellow', icon: <Star size={24} /> },
         ].map(stat => (
           <div key={stat.label} className={`stat-card ${stat.color}`}>
             <div className="stat-icon">{stat.icon}</div>
@@ -59,7 +60,7 @@ export default function Analytics() {
         {/* MTTR Trend */}
         <div className="card">
           <div className="card-header">
-            <div className="card-title">⏱️ Mean Time to Repair (MTTR) Trend</div>
+            <div className="card-title"><Clock size={18} style={{display: 'inline', verticalAlign: 'text-bottom', marginRight: 8}} /> Mean Time to Repair (MTTR) Trend</div>
           </div>
           <div className="card-body">
             <ResponsiveContainer width="100%" height={200}>
@@ -83,7 +84,7 @@ export default function Analytics() {
         {/* Call Deflection */}
         <div className="card">
           <div className="card-header">
-            <div className="card-title">📞 Call Deflection Rate</div>
+            <div className="card-title"><PhoneCall size={18} style={{display: 'inline', verticalAlign: 'text-bottom', marginRight: 8}} /> Call Deflection Rate</div>
           </div>
           <div className="card-body">
             <ResponsiveContainer width="100%" height={200}>
@@ -109,7 +110,7 @@ export default function Analytics() {
         {/* Weekly Tickets */}
         <div className="card" style={{ gridColumn: 'span 2' }}>
           <div className="card-header">
-            <div className="card-title">📅 Weekly Ticket Volume</div>
+            <div className="card-title"><Calendar size={18} style={{display: 'inline', verticalAlign: 'text-bottom', marginRight: 8}} /> Weekly Ticket Volume</div>
           </div>
           <div className="card-body">
             <ResponsiveContainer width="100%" height={200}>
@@ -129,7 +130,7 @@ export default function Analytics() {
         {/* Resolution Breakdown */}
         <div className="card">
           <div className="card-header">
-            <div className="card-title">🤖 Resolution Breakdown</div>
+            <div className="card-title"><Bot size={18} style={{display: 'inline', verticalAlign: 'text-bottom', marginRight: 8}} /> Resolution Breakdown</div>
           </div>
           <div className="card-body">
             <ResponsiveContainer width="100%" height={160}>

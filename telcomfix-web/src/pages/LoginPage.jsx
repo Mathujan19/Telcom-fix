@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { RadioTower, Settings, AlertCircle, Loader2, KeyRound, UserPlus, ShieldCheck } from 'lucide-react';
 
 export default function LoginPage() {
   const [loading, setLoading] = useState(false);
@@ -21,7 +22,7 @@ export default function LoginPage() {
       }
     } catch (err) {
       if (err.message?.includes('Firebase Console') || err.message?.includes('configuration-not-found')) {
-        setError('⚙️ Firebase setup needed: Enable Email/Password Auth in your Firebase Console.');
+        setError(<> <Settings size={16} style={{display: 'inline', verticalAlign: 'middle', marginRight: 4}} /> Firebase setup needed: Enable Email/Password Auth in your Firebase Console.</>);
       } else {
         setError(err.message);
       }
@@ -50,8 +51,8 @@ export default function LoginPage() {
 
         <div style={{ zIndex: 10 }}>
           <div className="slide-in-right" style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '40px' }}>
-            <div style={{ width: '48px', height: '48px', background: 'var(--red-primary)', borderRadius: '14px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '24px', boxShadow: '0 0 30px rgba(244,63,94,0.4)' }}>
-              📡
+            <div style={{ width: '48px', height: '48px', background: 'var(--red-primary)', borderRadius: '14px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white', boxShadow: '0 0 30px rgba(244,63,94,0.4)' }}>
+              <RadioTower size={28} />
             </div>
             <h1 style={{ fontSize: '28px', fontWeight: '800', letterSpacing: '-0.5px' }}>TelcomFix</h1>
           </div>
@@ -95,8 +96,8 @@ export default function LoginPage() {
           {/* Mode Tabs */}
           <div style={{ display: 'flex', background: 'var(--gray-200)', borderRadius: '16px', padding: '4px', marginBottom: '32px' }}>
             {[
-              { id: 'login', label: '🔑 Sign In' }, 
-              { id: 'signup', label: '✨ Create Account' }
+              { id: 'login', label: <><KeyRound size={16} style={{display: 'inline', verticalAlign: 'text-bottom', marginRight: 6}} /> Sign In</> }, 
+              { id: 'signup', label: <><UserPlus size={16} style={{display: 'inline', verticalAlign: 'text-bottom', marginRight: 6}} /> Create Account</> }
             ].map(m => (
               <button
                 key={m.id}
@@ -159,7 +160,7 @@ export default function LoginPage() {
 
             {error && (
               <div className="slide-in" style={{ background: 'var(--red-light)', border: '1px solid var(--red-border)', borderRadius: '12px', padding: '16px', marginBottom: '24px', fontSize: '13px', color: 'var(--red-dark)', fontWeight: '500' }}>
-                ⚠️ {error}
+                <AlertCircle size={16} style={{display: 'inline', verticalAlign: 'text-bottom', marginRight: 6}} /> {error}
               </div>
             )}
 
@@ -170,14 +171,16 @@ export default function LoginPage() {
               disabled={loading || !email || !password || (mode === 'signup' && !name)}
             >
               {loading 
-                ? '🔄 Processing...' 
-                : (mode === 'login' ? 'Sign In →' : 'Create Account ✨')
+                ? <><Loader2 size={18} className="animate-spin" style={{display: 'inline', verticalAlign: 'text-bottom', marginRight: 8}} /> Processing...</>
+                : (mode === 'login' 
+                  ? <><KeyRound size={18} style={{display: 'inline', verticalAlign: 'text-bottom', marginRight: 8}} /> Sign In</> 
+                  : <><UserPlus size={18} style={{display: 'inline', verticalAlign: 'text-bottom', marginRight: 8}} /> Create Account</>)
               }
             </button>
           </form>
 
-          <p style={{ textAlign: 'center', fontSize: '12px', color: 'var(--gray-400)', marginTop: '40px', fontWeight: '500' }}>
-            CodeArena'26 · TelcomFix
+          <p style={{ textAlign: 'center', fontSize: '12px', color: 'var(--gray-400)', marginTop: '40px', fontWeight: '500', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6 }}>
+            <ShieldCheck size={14} /> Secured by TelcomFix Platform
           </p>
         </div>
       </div>
