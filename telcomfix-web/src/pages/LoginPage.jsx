@@ -8,6 +8,7 @@ export default function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
+  const [role, setRole] = useState('admin');
 
   const handleAuth = async (e) => {
     e.preventDefault();
@@ -18,7 +19,7 @@ export default function LoginPage() {
       if (mode === 'login') {
         await auth.signIn(email, password);
       } else {
-        await auth.signUp(email, password, name);
+        await auth.signUp(email, password, name, role);
       }
     } catch (err) {
       if (err.message?.includes('Firebase Console') || err.message?.includes('configuration-not-found')) {
@@ -118,18 +119,32 @@ export default function LoginPage() {
 
           <form onSubmit={handleAuth} key={mode} className="slide-in">
             {mode === 'signup' && (
-              <div className="form-group slide-in" style={{ animationDelay: '0.1s', animationFillMode: 'both' }}>
-                <label className="form-label">Full Name</label>
-                <input
-                  type="text"
-                  required
-                  className="form-input"
-                  style={{ padding: '14px 16px', fontSize: '15px' }}
-                  placeholder="John Doe"
-                  value={name}
-                  onChange={e => setName(e.target.value)}
-                />
-              </div>
+              <>
+                <div className="form-group slide-in" style={{ animationDelay: '0.05s', animationFillMode: 'both' }}>
+                  <label className="form-label">Full Name</label>
+                  <input
+                    type="text"
+                    required
+                    className="form-input"
+                    style={{ padding: '14px 16px', fontSize: '15px' }}
+                    placeholder="John Doe"
+                    value={name}
+                    onChange={e => setName(e.target.value)}
+                  />
+                </div>
+                <div className="form-group slide-in" style={{ animationDelay: '0.1s', animationFillMode: 'both' }}>
+                  <label className="form-label">Role</label>
+                  <select 
+                    className="form-select" 
+                    value={role} 
+                    onChange={e => setRole(e.target.value)}
+                    style={{ padding: '14px 16px', fontSize: '15px', width: '100%' }}
+                  >
+                    <option value="admin">System Administrator</option>
+                    <option value="noc">NOC Engineer</option>
+                  </select>
+                </div>
+              </>
             )}
             
             <div className="form-group slide-in" style={{ animationDelay: mode === 'signup' ? '0.2s' : '0.1s', animationFillMode: 'both' }}>
