@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { RadioTower, Settings, AlertCircle, Loader2, KeyRound, UserPlus, ShieldCheck } from 'lucide-react';
+import { useApp } from '../context/AppContext';
 
 export default function LoginPage() {
+  const { dispatch } = useApp();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [mode, setMode] = useState('login'); // 'login' | 'signup'
@@ -16,11 +18,13 @@ export default function LoginPage() {
     setError(null);
     try {
       const auth = await import('../firebase/auth');
+      let result;
       if (mode === 'login') {
-        await auth.signIn(email, password);
+        result = await auth.signIn(email, password);
       } else {
-        await auth.signUp(email, password, name, role);
+        result = await auth.signUp(email, password, name, role);
       }
+      dispatch({ type: 'SET_AUTH', user: result.user, profile: result.profile });
     } catch (err) {
       if (err.message?.includes('Firebase Console') || err.message?.includes('configuration-not-found')) {
         setError(<> <Settings size={16} style={{display: 'inline', verticalAlign: 'middle', marginRight: 4}} /> Firebase setup needed: Enable Email/Password Auth in your Firebase Console.</>);
