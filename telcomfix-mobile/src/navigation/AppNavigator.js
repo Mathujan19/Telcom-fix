@@ -18,6 +18,7 @@ import JobQueueScreen from '../screens/engineer/JobQueueScreen';
 import JobDetailScreen from '../screens/engineer/JobDetailScreen';
 import TowerMapScreen from '../screens/engineer/TowerMapScreen';
 import AlarmFeedScreen from '../screens/engineer/AlarmFeedScreen';
+import AIAssistantScreen from '../screens/engineer/AIAssistantScreen';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -27,7 +28,7 @@ function CustomerTabs() {
     <Tab.Navigator
       screenOptions={{
         headerShown: false,
-        tabBarActiveTintColor: '#f43f5e',
+        tabBarActiveTintColor: '#0f766e',
         tabBarInactiveTintColor: '#94a3b8',
         tabBarStyle: {
           backgroundColor: '#fff',
@@ -67,11 +68,11 @@ function EngineerTabs() {
     <Tab.Navigator
       screenOptions={{
         headerShown: false,
-        tabBarActiveTintColor: '#f43f5e',
-        tabBarInactiveTintColor: '#64748b',
+        tabBarActiveTintColor: '#0f766e',
+        tabBarInactiveTintColor: '#94a3b8',
         tabBarStyle: {
-          backgroundColor: '#0f172a',
-          borderTopColor: '#1e293b',
+          backgroundColor: '#fff',
+          borderTopColor: '#e2e8f0',
           paddingBottom: 4,
           height: 60,
         },
@@ -92,6 +93,11 @@ function EngineerTabs() {
         name="AlarmFeed"
         component={AlarmFeedScreen}
         options={{ tabBarLabel: 'Alarms', tabBarIcon: ({ color }) => <TabIcon iconName="bell" color={color} /> }}
+      />
+      <Tab.Screen
+        name="AIAssistant"
+        component={AIAssistantScreen}
+        options={{ tabBarLabel: 'AI Insights', tabBarIcon: ({ color }) => <TabIcon iconName="cpu" color={color} /> }}
       />
     </Tab.Navigator>
   );

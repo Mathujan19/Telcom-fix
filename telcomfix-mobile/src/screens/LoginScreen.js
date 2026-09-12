@@ -170,10 +170,10 @@ const styles = StyleSheet.create({
   header: { alignItems: 'center', marginBottom: 40 },
   logoBox: {
     width: 72, height: 72, borderRadius: 20,
-    backgroundColor: '#f43f5e',
+    backgroundColor: '#0f766e',
     alignItems: 'center', justifyContent: 'center',
     marginBottom: 16,
-    shadowColor: '#f43f5e', shadowOpacity: 0.3, shadowRadius: 12, elevation: 6,
+    shadowColor: '#0f766e', shadowOpacity: 0.3, shadowRadius: 12, elevation: 6,
   },
   title: { fontSize: 28, fontFamily: 'Outfit_800ExtraBold', color: '#0f172a', letterSpacing: -0.5 },
   subtitle: { fontSize: 13, fontFamily: 'Inter_500Medium', color: '#64748b', marginTop: 6, textAlign: 'center' },
@@ -194,11 +194,11 @@ const styles = StyleSheet.create({
 
   roleSelect: { flexDirection: 'row', gap: 12 },
   roleOpt: { flex: 1, alignItems: 'center', paddingVertical: 12, borderRadius: 12, borderWidth: 1, borderColor: '#e2e8f0', backgroundColor: '#f8fafc' },
-  roleOptActive: { borderColor: '#f43f5e', backgroundColor: '#fff1f2' },
+  roleOptActive: { borderColor: '#0f766e', backgroundColor: '#f0fdfa' },
   roleOptText: { fontSize: 13, fontFamily: 'Inter_600SemiBold', color: '#64748b' },
-  roleOptTextActive: { color: '#e11d48' },
+  roleOptTextActive: { color: '#0f766e' },
 
-  primaryBtn: { backgroundColor: '#0f172a', height: 48, borderRadius: 12, alignItems: 'center', justifyContent: 'center', marginTop: 8 },
+  primaryBtn: { backgroundColor: '#0f766e', height: 48, borderRadius: 12, alignItems: 'center', justifyContent: 'center', marginTop: 8 },
   primaryBtnText: { color: '#fff', fontSize: 15, fontFamily: 'Inter_600SemiBold' },
 
   demoBox: { marginTop: 32, paddingTop: 24, borderTopWidth: 1, borderTopColor: '#f1f5f9', alignItems: 'center' },
